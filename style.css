@@ -1,174 +1,935 @@
-@layer base, demo;
-@import url(https://fonts.bunny.net/css?family=abel:400);
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
-@layer demo {
-	.carousel {
-		--items: 6;
-		--carousel-duration: 40s;
-		@media (width > 600px) {
-			--carousel-duration: 30s;
-		}
-		--carousel-width: min(
-			80vw,
-			800px
-		); /* note - it will "break" if it gets too wide and there aren't enough items */
-		--carousel-item-width: 280px;
-		--carousel-item-height: 450px;
-		--carousel-item-gap: 2rem;
-
-		--clr-cta: rgb(0, 132, 209);
-
-		position: relative;
-		width: var(--carousel-width);
-		height: var(--carousel-item-height);
-		overflow: clip;
-
-		&[mask] {
-			/* fade out on sides */
-			mask-image: linear-gradient(
-				to right,
-				transparent,
-				black 10% 90%,
-				transparent
-			);
-		}
-
-		&[reverse] > article {
-			animation-direction: reverse;
-		}
-		/* hover pauses animation */
-		&:hover > article {
-			animation-play-state: paused;
-		}
-	}
-	.carousel > article {
-		position: absolute;
-		top: 0;
-		left: calc(100% + var(--carousel-item-gap));
-		width: var(--carousel-item-width);
-		height: var(--carousel-item-height);
-		display: grid;
-		grid-template-rows: 200px auto 1fr auto;
-		gap: 0.25rem;
-		border: 1px solid light-dark(rgba(0 0 0 / 0.25), rgba(255 255 255 / 0.15));
-
-		padding-block-end: 1rem;
-		border-radius: 10px;
-		background: light-dark(white, rgba(255 255 255 / 0.05));
-		color: light-dark(rgb(49, 65, 88), white);
-
-		/* animation */
-		will-change: transform;
-		animation-name: marquee;
-		animation-duration: var(--carousel-duration);
-		animation-timing-function: linear;
-		animation-iteration-count: infinite;
-		animation-delay: calc(
-			var(--carousel-duration) / var(--items) * 1 * var(--i) * -1
-		);
-		&:nth-child(1) {
-			--i: 0;
-		}
-		&:nth-child(2) {
-			--i: 1;
-		}
-		&:nth-child(3) {
-			--i: 2;
-		}
-		&:nth-child(4) {
-			--i: 3;
-		}
-		&:nth-child(5) {
-			--i: 4;
-		}
-		&:nth-child(6) {
-			--i: 5;
-		}
-		&:nth-child(7) {
-			--i: 6;
-		}
-		&:nth-child(8) {
-			--i: 7;
-		}
-	}
-	.carousel img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-
-		border-radius: 10px 10px 0 0;
-	}
-	.carousel > article > *:not(img) {
-		padding: 0 1rem;
-	}
-	.carousel > article > div {
-		grid-row: span 2;
-		display: grid;
-		grid-template-rows: subgrid;
-		font-size: 0.8rem;
-	}
-	.carousel > article h2 {
-		font-size: 1.2rem;
-		font-weight: 300;
-		padding-block: 0.75rem 0.25rem;
-		margin: 0;
-	}
-	.carousel > article p {
-		margin: 0;
-	}
-	.carousel > article a {
-		text-decoration: none;
-		text-transform: lowercase;
-		border: 1px solid var(--clr-cta);
-		color: light-dark(var(--clr-cta), white);
-		border-radius: 3px;
-		padding: 0.25rem 0.5rem;
-		place-self: start;
-		transition: 150ms ease-in-out;
-		&:hover,
-		&:focus-visible {
-			background-color: var(--clr-cta);
-			color: white;
-			outline: none;
-		}
-	}
-
-	@keyframes marquee {
-		100% {
-			transform: translateX(
-				calc(
-					(var(--items) * (var(--carousel-item-width) + var(--carousel-item-gap))) *
-						-1
-				)
-			);
-		}
-	}
+body {
+  background: #f5f5f5;
+  min-height: 100vh;
+  margin: 0;
+  padding: 40px 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #333;
 }
 
-/* general styling */
-@layer base {
-	* {
-		box-sizing: border-box;
-	}
-	:root {
-		color-scheme: light dark;
+h1 {
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: #101828;
+	text-align: center;
+	display: block;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	font-weight: bold;
+}
 
-		--bg-dark: rgb(2, 6, 24);
-		--bg-light: rgb(229, 229, 229);
-		--txt-light: rgb(10, 10, 10);
-		--txt-dark: rgb(245, 245, 245);
+.container {
+  display: flex;
+  gap: 40px;
+  padding: 20px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center
+
+}
+
+.card {
+  background: white;
+  border-radius: 24px !important;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+  width: 356px;
+  height: 426px;
+  display:flex;
+  align-items: center;
+  justify-content: center
+}
+
+.card::after {
+  content: attr(data-description);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #F5F5F5;
+background: linear-gradient(0deg,rgba(245, 245, 245, 1) 0%, rgba(245, 245, 245, 0.8) 39%, rgba(255, 255, 255, 0) 100%);
+  color: #191919;
+  padding: 30px;
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 12;
+  height: calc(100% - 60px);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  text-align: center;
+    width: 100%;
+  display:block;
+  z-index: 99
+}
+
+.card p {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.clock-container {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px
+}
+
+.clock-face {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+}
+
+.hour-marks {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.hour-mark {
+  position: absolute;
+  left: 50%;
+  transform-origin: 0 140px;
+}
+
+.minute-mark {
+  position: absolute;
+  left: 50%;
+  transform-origin: 0 140px;
+}
+
+.hour-number {
+  position: absolute;
+  text-align: center;
+  transform-origin: center;
+}
+
+.hand {
+  position: absolute;
+  transform-origin: bottom center;
+  bottom: 140px;
+  left: 140px;
+}
+
+.skeuomorphic {
+background: #F5F5F5;
+background: linear-gradient(140deg,rgba(245, 245, 245, 1) 0%, rgba(230, 230, 230, 1) 50%, rgba(214, 214, 214, 1) 100%);
+}
+
+.skeuomorphic .clock-container {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+}
+
+.skeuomorphic .clock-face {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(0, 0, 0, 0.1),
+    0 2px 5px rgba(0, 0, 0, 0.3);
+
+}
+
+.skeuomorphic .clock-reflection {
+  position: absolute;
+  width: 260px;
+  height: 130px;
+  top: 20px;
+  left: 10px;
+  border-radius: 130px 130px 0 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 11;
+}
+
+.skeuomorphic .clock-center {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #333;
+  border-radius: 50%;
+  top: 133px;
+  left: 133px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.skeuomorphic .clock-center::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #888;
+  border-radius: 50%;
+  top: 4px;
+  left: 4px;
+}
+
+.skeuomorphic .hour-mark {
+  width: 4px;
+  height: 12px;
+  background: #333;
+  margin-left: -2px;
+}
+
+.skeuomorphic .minute-mark {
+  width: 2px;
+  height: 6px;
+  background: #666;
+  margin-left: -1px;
+}
+
+.skeuomorphic .hour-number {
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.skeuomorphic .hour-hand {
+  width: 8px;
+  height: 75px;
+  background: #333;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 2px 0px 7px rgba(0, 0, 0, 0.5);
+  z-index: 7;
+  margin-left: -4px;
+}
+
+.skeuomorphic .minute-hand {
+  width: 6px;
+  height: 105px;
+  background: #444;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.5);
+  z-index: 8;
+  margin-left: -3px;
+}
+
+.skeuomorphic .second-hand {
+  width: 2px;
+  height: 115px;
+  background: #c00;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
+  z-index: 9;
+}
+
+.skeuomorphic .clock-bezel {
+  position: absolute;
+  width: 290px;
+  height: 290px;
+  top: -5px;
+  left: -5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d0d0d0 0%, #f8f8f8 100%);
+  z-index: -1;
+}
+
+.flat-design {
+  background: #f2f2f7
+}
+
+.flat-design .clock-face {
+  background: #ffffff;
+  border: 3px solid #191919
+}
+
+.flat-design .clock-center {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #ffcd50;
+  border-radius: 50%;
+  top: 134px;
+  left: 134px;
+  z-index: 10;
+}
+
+.flat-design .hour-mark {
+  width: 3px;
+  height: 10px;
+  background: #555;
+}
+
+.flat-design .minute-mark {
+  width: 2px;
+  height: 8px;
+  background: #bcbcbc;
+}
+
+.flat-design .hour-number {
+  font-size: 24px;
+  font-weight: 400;
+  color: #555;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.flat-design .hour-hand {
+  width: 6px;
+  height: 70px;
+  background: #555;
+  z-index: 7;
+  margin-left: -3px;
+}
+
+.flat-design .minute-hand {
+  width: 4px;
+  height: 95px;
+  background: #777;
+  z-index: 8;
+  margin-left: -2px;
+}
+
+.flat-design .second-hand {
+  width: 2px;
+  height: 110px;
+  background: #ffcd50;
+  z-index: 9;
+}
+
+.material-design {
+ background: #EDE7F6;
+}
+
+.material-design .clock-face {
+  background: #512da8;
+box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;}
+
+.material-design .clock-face-inner {
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  background: #7E57C2;
+box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  z-index:2;
+  display:flex;
+  align-items: center;
+  justify-content: center
+}
+
+.material-design .clock-center {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #f44336;
+  border-radius: 50%;
+  top: 134px;
+  left: 134px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+}
+
+.material-design .hour-number {
+  font-size: 20px;
+  font-weight: 500;
+  color: #EDE7F6;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.material-design .hour-hand {
+  width: 6px;
+  height: 60px;
+  background: #fff;
+  border-radius: 4px;
+  z-index: 7;
+  margin-left: -2px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.material-design .minute-hand {
+  width: 6px;
+  height: 98px;
+  background: #EDE7F6;
+  border-radius: 4px;
+  z-index: 8;
+  margin-left: -2px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+}
+
+.material-design .second-hand {
+  width: 2px;
+  height: 110px;
+  background: #f44336;
+  z-index: 9;
+      box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+}
+
+.neumorphism {
+  border-radius: 30px;
+  background: #e8eaf6;
+  box-shadow: 10px 10px 20px #d1d1d1, -10px -10px 20px #ffffff;
+}
+
+.neumorphism .clock-face {
+  border-radius: 50%;
+background: linear-gradient(145deg, #d1d3dd, #f8faff);
+box-shadow:  20px 20px 60px #c5c7d1,
+             -20px -20px 60px #ffffff;
+}
+
+.neumorphism .clock-face-inner {
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  z-index:1;
+  background: #e8eaf6;
+box-shadow:  20px 20px 40px #b0b2bb,
+             -20px -20px 40px #ffffff;
+}
+
+.neumorphism .clock-center {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  top: 132.5px;
+  left: 132.5px;
+background: linear-gradient(145deg, #f8faff, #d1d3dd);
+box-shadow:  1px 1px 2px #797a80,
+             -1px -1px 2px #ffffff;
+
+  z-index: 10;
+}
+
+.neumorphism .hour-mark {
+  width: 2px;
+  height: 24px;
+}
+
+.neumorphism .hour-mark::after {
+  content: '';
+  display:block;
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 16px;
+  border-radius: 10px;
+  background: #e8eaf6;
+box-shadow: inset 1px 1px 7px #bec0ca,
+            inset -1px -1px 7px #ffffff;
+}
+
+.neumorphism .minute-mark {
+  display:none
+}
+
+.neumorphism .hour-number {
+  display:none
+}
+
+.neumorphism .hour-hand {
+  width: 6px;
+  height: 70px;
+  background: #030943;
+  border-radius: 3px;
+  z-index: 7;
+  margin-left: -2px;
+}
+
+.neumorphism .minute-hand {
+  width: 4px;
+  height: 95px;
+  background: #536089;
+  border-radius: 2px;
+  z-index: 8;
+  margin-left: -1px;
+}
+
+.neumorphism .second-hand {
+  width: 2px;
+  height: 110px;
+  background: #dd0f2e;
+  border-radius: 1px;
+  z-index: 9;
+}
+
+.glassmorphism {
+  background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  overflow: hidden
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.glassmorphism .clock-face {
+   backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.33);
+    border: 1px solid rgba(209, 213, 219, 0.6);
+  overflow: hidden
+}
+
+.glassmorphism .clock-face::after {
+  background-color: rgba(255, 255, 255, .05);
+    bottom: 0;
+    content: '';
+    filter: blur(4px);
+    left: -99px;
+    position: absolute;
+    right: .865%;
+    top: -300px;
+    transform: rotate(45deg);
+    z-index: 1;
+}
+
+.glassmorphism .clock-center {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  top: 134px;
+  left: 134px;
+  z-index: 10;
+  border: 10 solid rgba(0,0,0,0.5)
+}
+
+.glassmorphism .hour-mark {
+  width: 4px;
+  height: 18px;
+  margin-left: -1px;
+}
+
+.glassmorphism .hour-mark::after {
+  content: '';
+  display:block;
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.glassmorphism .minute-mark {
+  width: 1px;
+  height: 16px;
+  margin-left: -0.5px;
+  border-radius: 50%;
+}
+
+.glassmorphism .minute-mark::after {
+  content: '';
+  display:block;
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.glassmorphism .hour-number {
+  font-size: 20px;
+  font-weight: 400;
+  color: white;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  display: none
+}
+
+.glassmorphism .hour-hand {
+  width: 5px;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2.5px;
+  z-index: 7;
+  margin-left: -2px;
+}
+
+.glassmorphism .minute-hand {
+  width: 3px;
+  height: 95px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 1.5px;
+  z-index: 8;
+  margin-left: -1px;
+}
+
+.glassmorphism .second-hand {
+  width: 2px;
+  height: 110px;
+  background: rgba(255, 255, 255, 1);
+  z-index: 9;
+}
+
+.glassmorphism .shapes-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.glassmorphism .shapes-container::after {
+  background-color: rgba(255, 255, 255, .05);
+    bottom: 0;
+    content: '';
+    filter: blur(4px);
+    left: -99px;
+    position: absolute;
+    right: .865%;
+    top: -480px;
+    transform: rotate(45deg);
+    z-index: 1;
+}
+
+.glassmorphism .shape {
+  position: absolute;
+  opacity: 0.6;
+  animation: float 20s infinite ease-in-out;
+}
+
+.glassmorphism .shape.circle {
+  width: 120px;
+  height: 120px;
+    backdrop-filter: blur(5px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.38);
+    border: 1px solid rgba(209, 213, 219, 0.8);
+  border-radius: 50%;
+  top: 20%;
+  left: 10%;
+  animation-duration: 10s;
+}
+
+.glassmorphism .shape.rounded-square {
+  width: 100px;
+  height: 100px;
+  backdrop-filter: blur(5px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.38);
+    border: 1px solid rgba(209, 213, 219, 0.8);
+  border-radius: 25px;
+  top: 70%;
+  left: 60%;
+  animation-duration: 16s;
+}
+
+@keyframes float {
+  0%   { transform: translateY(0px) translateX(0px) rotate(0deg); }
+  50%  { transform: translateY(-25px) translateX(15px) rotate(180deg); }
+  100% { transform: translateY(0px) translateX(0px) rotate(360deg); }
+}
+
+.claymorphism {
+  border-radius: 30px;
+  background: #f4f4fc;
+  box-shadow: 35px 35px 68px 0px rgba(145, 192, 255, 0.5), inset -2px -2px 16px 0px rgba(145, 192, 255, 0.6), inset 0px 11px 28px 0px rgb(255, 255, 255);
+}
+
+.claymorphism .clock-face {
+  background: #f4f4fc;
+  border-radius: 50%;
+  box-shadow: 35px 35px 68px 0px rgba(145, 192, 255, 0.5), inset -7px -7px 16px 0px rgba(145, 192, 255, 0.6), inset 0px 11px 28px 0px rgb(255, 255, 255);
+}
+
+.claymorphism .clock-center {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #6457f9;
+  border-radius: 50%;
+  top: 131px;
+  left: 131px;
+  box-shadow: 3px 3px 6px rgba(10, 10, 40, 0.2);
+  z-index: 10;
+}
+
+.claymorphism .hour-mark {
+  width: 4px;
+  height: 12px;
+  background: #9c92ff;
+  margin-left: -2px;
+  border-radius: 2px;
+}
+
+.claymorphism .minute-mark {
+  width: 2px;
+  height: 6px;
+  background: #c4beff;
+  margin-left: -1px;
+  border-radius: 1px;
+}
+
+.claymorphism .hour-number {
+  font-size: 22px;
+  font-weight: 600;
+  color: #6457f9;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.claymorphism .hour-hand {
+  width: 8px;
+  height: 70px;
+  background: #6457f9;
+  border-radius: 4px;
+  z-index: 7;
+  margin-left: -3px;
+}
+
+.claymorphism .minute-hand {
+  width: 6px;
+  height: 95px;
+  background: #9c92ff;
+  border-radius: 3px;
+  z-index: 8;
+  margin-left: -2px;
+}
+
+.claymorphism .second-hand {
+  width: 3px;
+  height: 110px;
+  background: #ff6b6b;
+  border-radius: 1.5px;
+  z-index: 9;
+}
+
+.brutalism {
+  background: #fff;
+}
+
+.brutalism {
+  border-radius: 0;
+  background: #c0f7fe;
+  box-shadow: none;
+  border: 4px solid #000;
+  transition: all 0.1s;
+  padding: 25px;
+}
+
+.brutalism .clock-face {
+  background: #91a8ee;
+  border: 2px solid black;
+  box-shadow:  -16px 0px 0px #000 ;
+}
+
+.brutalism .clock-face-inner {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 90%;
+  border: 2px solid black;
+  border-radius: 50%;
+  z-index:1;
+  background: #fe90e8;
+box-shadow:  -8px 0px 0px #000 inset;
+}
+
+.brutalism .clock-face-inner-2 {
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  z-index:2;
+  background: #ffff19;
+box-shadow:  -4px 0px 0px #000 inset;
+}
+
+.brutalism .clock-center {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: #000;
+  border-radius: 50%;
+  top: 132px;
+  left: 132px;
+  z-index: 10;
+}
+
+.brutalism .hour-mark {
+  width: 1px;
+  height: 50px;
+  margin-left: -5px;
+  z-index: 12
+}
+
+.brutalism .hour-mark::after {
+  content: '';
+  display:block;
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 24px;
+  border-radius: 50%;
+  background: #000;
+}
+
+.brutalism .minute-mark {
+  display: none
+}
+
+.brutalism .hour-hand {
+  width: 8px;
+  height: 40px;
+  background: #000;
+  z-index: 7;
+  border-radius: 5px;
+  margin-left: -4px
+}
+
+.brutalism .minute-hand {
+  width: 8px;
+  height: 64px;
+  background: #000;
+  z-index: 8;
+  border-radius: 5px;
+  margin-left: -4px
+}
+
+.brutalism .second-hand {
+  display:none
+}
+
+.brutalism .hour-number {
+  display:none
+}
+
+.minimalism .card {
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+}
+
+.minimalism .clock-face {
+  background: #ffffff;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.minimalism .clock-center {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #111;
+  border-radius: 50%;
+  top: 136px;
+  left: 136px;
+  z-index: 10;
+}
+
+.minimalism .hour-mark {
+  width: 1px;
+  height: 8px;
+  background: #111;
+  margin-left: -0.5px;
+  opacity: 0.2;
+}
+
+.minimalism .minute-mark {
+  width: 1px;
+  height: 4px;
+  background: #111;
+  margin-left: -0.5px;
+  opacity: 0.1;
+}
+
+.minimalism .hour-number {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  color: #111;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  opacity: 0.5;
+}
+
+.minimalism .hour-number:nth-child(3n) {
+  opacity: 1;
+}
+
+.minimalism .hour-hand {
+  width: 3px;
+  height: 65px;
+  background: #111;
+  border-radius: 1.5px;
+  z-index: 7;
+}
+
+.minimalism .minute-hand {
+  width: 2px;
+  height: 90px;
+  background: #111;
+  border-radius: 1px;
+  z-index: 8;
+}
+
+.minimalism .second-hand {
+  width: 1px;
+  height: 110px;
+  background: #ff3b30;
+  z-index: 9;
+}
+
+@media (min-width: 699px) and (max-width: 705px) {
+	.card {
+		transform: scale(0.45);
+		margin: -140px -120px
 	}
-	body {
-		background-color: light-dark(var(--bg-light), var(--bg-dark));
-		color: light-dark(var(--txt-light), var(--txt-dark));
-		min-height: 100svh;
-		margin: 0;
-		padding: 1rem;
-		font-size: 1rem;
-		font-family: "Abel", sans-serif;
-		line-height: 1.5;
-		display: grid;
-		place-items: center;
-		gap: 2rem;
+	h1 {
+		font-size: 1.25em
 	}
 }
